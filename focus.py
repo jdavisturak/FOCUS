@@ -4,7 +4,7 @@
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
 import os,sys,random
-
+import traceback
 ##############################
 #  Program Defaults parameters#
 ##############################
@@ -175,6 +175,7 @@ elif parameters["-d"]!="":
                 
         f.close()
     except:
+        print traceback.format_exc()
         print usage
 
 ###check if the query exists or if it is adding genome to the db
@@ -428,4 +429,5 @@ else:
                     
         main() 
     except:
+        print traceback.format_exc()
         print usage
