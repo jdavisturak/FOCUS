@@ -177,6 +177,7 @@ elif parameters["-d"]!="":
     except:
         print traceback.format_exc()
         print usage
+        sys.exit(1)
 
 ###check if the query exists or if it is adding genome to the db
 elif os.path.isfile(parameters["-q"])!=True and os.path.isdir(parameters["-q"])!=True:
@@ -431,3 +432,4 @@ else:
     except:
         print traceback.format_exc()
         print usage
+        sys.exit(1)
