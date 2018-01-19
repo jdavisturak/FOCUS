@@ -60,9 +60,9 @@ def main():
     print "3) Calculating confidence interval"
 
     #parses the FOCUS output for all the resamples by taking the AVG and STD of all the samples
-    for myfile in [i for i in os.listdir(".") if "resample__STAMP_tabular." in i]:
+    for myfile in [i for i in os.listdir("resample_result") if "resample__STAMP_tabular." in i]:
         f=open(myfile)
-        o=open("resample_result/"+INPUT+"__"+myfile,"w+")
+        o=open("resample_result/"+myfile,"w+")
         head=f.readline().split("\t")
         head="\t".join(head[:len(head)-number_resamples])+"Resample Average\tResample Standard Deviation\n"
         o.write(head)
