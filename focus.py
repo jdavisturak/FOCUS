@@ -422,7 +422,7 @@ else:
                         labels,fracs,level=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
-                        myFile = "{}_{}.focus".format(outputPrefix, ["Kingdom","Phylum","Class","Order","Family","Genus","Species"][level])
+                        myFile = "{}_{}.focus".format(outputPrefix, level)
                         with open(myFile, 'w') as o:
                             o.write(tabular[level])
                     # print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
