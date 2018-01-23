@@ -8,7 +8,7 @@ import traceback
 ##############################
 #  Program Defaults parameters#
 ##############################
-parameters={"-k":"7","-q":"","-m":"1","-d":"","dir":"","-s":"0","-l":"all"}
+parameters={"-k":"7","-q":"","-m":"1","-d":"","dir":"","-s":"0","-l":"all","-o":""}
 # [-q] metagenome sequence files in FASTA format  or directory (multi-samples; please set -s 1)
 # [-k] k-mer choice
 # [-m] minimum abundance percent
@@ -24,6 +24,7 @@ usage="FOCUS: An Alignment-Free Model To Identify Organisms In Metagenomes Using
        "   -k Specify k-mer frequency used on the profile (default: 7)\n"\
        "       6,7 and 8 frequencies are available.\n"\
        "     All the output files have this project name as prefix.\n"\
+       "   -o additional prefix for output files (default: '<input file>').\n"\
        "   -m minimum relative abundance to show in the results (default: 1%)\n"\
        "      Cut-off for the showing results.\n   -d Insert your own data into the database\n"\
        "      more information README .\n"\
@@ -54,6 +55,10 @@ def setParameters():
         parameters["-s"]='1'
                     
 setParameters()#store user parameters
+if parameters['-o'] == '':
+    outputPrefix = parameters["-q"]
+else:
+    outputPrefix = parameters['-o']
 
 #returns the path for a given program name
 def which(program):
@@ -417,17 +422,33 @@ else:
                         labels,fracs,level=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
-                    print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
-                    print "That's it!"
+                        myFile = "{}_{}.focus".format(outputPrefix, ["Kingdom","Phylum","Class","Order","Family","Genus","Species"][level])
+                        with open(myFile, 'w') as o:
+                            o.write(tabular[level])
+                    # print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
+                    # print "That's it!"
+                    #
+                    # #Writes tabular output!
+                    # o=open(parameters["-q"]+"__output.txt","w+")
+                    # o.write("Query: "+parameters["-q"]+"\n")
+                    # o.write("K-mer size: "+parameters["-k"]+"\n\n")
+                    # for result in tabular:
+                    #     o.write(result)
+                    # o.close()
+                    #prefix = "%s/FOCUS_%s" % (self.outFolder, self.ID())
+                    # self.VARS['prefix'] = prefix
+                    # self.out_files = [("%s_%s.focus" % (outputPrefix, level), 'focus', level, level, prefix) for level in
+                    #                   out_levels]
 
-                    #Writes tabular output!
-                    o=open(parameters["-q"]+"__output.txt","w+")
-                    o.write("Query: "+parameters["-q"]+"\n")
-                    o.write("K-mer size: "+parameters["-k"]+"\n\n")
-                    for result in tabular:
-                        o.write(result)
-                    o.close()
-                    
+                    # Writes tabular output!
+                    # o = open(parameters["-q"] + "__output.txt", "w+")
+                    # o.write("Query: " + parameters["-q"] + "\n")
+                    # # o.write("K-mer size: " + parameters["-k"] + "\n\n")
+                    # for result in tabular:
+                    #     myFile = "{}_{}.focus".format(outputPrefix , level)
+                    #     with open(myFile,'w') as o:
+                    #         o.write(result)
+
         main() 
     except:
         print traceback.format_exc()
