@@ -1,6 +1,8 @@
 #!/usr/bin/python
 
 # FOCUS version 0.31
+import re
+
 from numpy import array,linspace,zeros,eye,concatenate,sum as SUM,linalg
 from scipy.optimize import nnls
 import os,sys,random
@@ -422,7 +424,7 @@ else:
                         labels,fracs,level=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
-                        myFile = "{}_{}.focus".format(outputPrefix, level)
+                        myFile = "{}_{}.focus".format(outputPrefix, re.sub(" Level","", level))
                         with open(myFile, 'w') as o:
                             o.write(tabular[i])
                     # print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
