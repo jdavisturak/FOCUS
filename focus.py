@@ -267,6 +267,7 @@ else:
         # Get the results, prints to the user and plot on the figures#
         ##############################################################
         def GetResults(level,organisms,weights):
+            currentTabular = []
             results={}
             #add in the hash the values related to the parameter 'level'
             for i in range(len(organisms)):
@@ -296,26 +297,27 @@ else:
 
             #prints the results in a readable format
             print "-"*80+"\n\t\t\t\t\t"+level+"\n"+"-"*80+"\n"+"-"*80+"\n"+"Rank\t\tPredicted Organism\t\tEstimated Abundance (%)"+"\n"+"-"*80
-            tabular.append(level+"\nRank\tPredicted Organism\tEstimated Abundance (%)\n")            
+            currentTabular.append(level+"\nRank\tPredicted Organism\tEstimated Abundance (%)\n")
 
             c=1
             labels=[];fracs=[]
             for i in results:
                 if i[0]>=float(parameters["-m"]):
                     print c,"\t\t",i[1],"\t\t",i[0]
-                    tabular.append(str(c)+"\t"+str(i[1])+"\t"+str(i[0])+"\n")
+                    currentTabular.append(str(c)+"\t"+str(i[1])+"\t"+str(i[0])+"\n")
                     c+=1
                     labels.append(i[1])
                     fracs.append(round(i[0],2))
             if float(parameters["-m"])>0 and (100-sum(fracs))>0:
                 print "-\t\t","Others (abundance < "+parameters["-m"]+"%)","\t\t",100-sum(fracs)
-                tabular.append(str("-\tOthers (abundance < "+str(parameters["-m"])+"%)")+"\t"+str(100-sum(fracs))+"\n\n")
+                currentTabular.append(str("-\tOthers (abundance < "+str(parameters["-m"])+"%)")+"\t"+str(100-sum(fracs))+"\n\n")
                 labels=labels+["Others (abundance < "+parameters["-m"]+"%)"]
                 fracs=fracs+[100-sum(fracs)]
             else:
-                tabular.append("\n")
+                currentTabular.append("\n")
             print "-"*80
-            return [labels,fracs,level]
+            tabular.extend(currentTabular)
+            return [labels,fracs,level, currentTabular]
          
         #######################################################
         #Starts to run FOCUS
@@ -421,12 +423,12 @@ else:
 
                     c=6
                     for i in xrange(7):
-                        labels,fracs,level=GetResults(i,organisms,weights)
+                        labels,fracs,level,currentTab=GetResults(i,organisms,weights)
                         print str(c)+") Printed the results for the "+level+"\n"
                         c+=1
                         myFile = "{}_{}.focus".format(outputPrefix, re.sub(" Level","", level))
                         with open(myFile, 'w') as o:
-                            o.write(tabular)
+                            o.write(currentTab)
                     # print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
                     # print "That's it!"
                     #
