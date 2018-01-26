@@ -23,7 +23,8 @@ if parameters['-o'] == '':
     outputFolder = parameters["-q"] + "_output"
 else:
     outputFolder = parameters['-o']
-os.makedirs(outputFolder)
+if not os.path.exists(outputFolder):
+    os.makedirs(outputFolder)
 
 INPUT=parameters["-q"]
 PERC=int(parameters["-p"])
