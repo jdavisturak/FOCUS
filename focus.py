@@ -361,11 +361,12 @@ else:
                             stamp[organisms[taxa]][myindex]=weights[taxa]
 
                     #writes in stamp format
-                    outputname=temp_query.split("/")
-                    if len(outputname[-1])==0:
-                        outputname=outputname[-2]
-                    else:
-                        outputname=outputname[-1]
+                    # outputname=temp_query.split("/")
+                    # if len(outputname[-1])==0:
+                    #     outputname=outputname[-2]
+                    # else:
+                    #     outputname=outputname[-1]
+                    outputname = outputPrefix
                         
                     o=open(outputname+"__STAMP_tabular.txt","w+")
                     o.write("Kingdom\tPhylum\tClass\tOrder\tFamily\tGenus\tSpecies\tStrain\t"+"\t".join([x.replace(".fna","").replace(".fasta","")for x in queries])+"\n")
