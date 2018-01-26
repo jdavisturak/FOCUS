@@ -40,7 +40,7 @@ def fasta2hash(fasta):
     return my_hash
 
 def writeRandsample(ID,keys,sequences):
-    o=open("resample/"+str(ID+1)+".fasta","w+")
+    o=open("{}/resample/{}.fasta".format(outputFolder, str(ID+1)),"w+")
     for k in keys:
         o.write(">"+str(k)+"\n"+sequences[k]+"\n")
     o.close()
@@ -61,7 +61,7 @@ def main():
         writeRandsample(sample,random_sample,sequences)
 
     print "2) Running FOCUS in the resample sequences"
-    focusCommand = "python {}/focus.py -q {}/resample/".format(parameters["dir"], outputFolder)
+    focusCommand = "python {}/focus.py -q {}/resample/ -o {}/".format(parameters["dir"], outputFolder,outputFolder)
     print "Running: " + focusCommand
     os.system(focusCommand)
 
@@ -86,7 +86,7 @@ def main():
         
 if parameters["-q"]!="":
     main()
-    os.system("rm {}/*resample__STAMP_tabular.* -r".format(outputPrefix))
+    os.system("rm {}/*resample__STAMP_tabular.* -r".format(outputFolder))
     # os.system("rm {}/resample/ -r")
     print "4) Done! Please check the folder 'resample_result' for results"
 else:
