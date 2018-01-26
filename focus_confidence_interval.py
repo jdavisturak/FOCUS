@@ -20,9 +20,10 @@ def setParameters():
                     print userParameters[i]+" is not a valid parameter"
 setParameters()#store user parameters
 if parameters['-o'] == '':
-    outputPrefix = parameters["-q"]
+    outputFolder = parameters["-q"] + "_output"
 else:
-    outputPrefix = parameters['-o']
+    outputFolder = parameters['-o']
+os.makedirs(outputFolder)
 
 INPUT=parameters["-q"]
 PERC=int(parameters["-p"])
@@ -59,16 +60,16 @@ def main():
         writeRandsample(sample,random_sample,sequences)
 
     print "2) Running FOCUS in the resample sequences"
-    focusCommand = "python {}/focus.py -q {}/resample/".format(parameters["dir"], outputPrefix)
+    focusCommand = "python {}/focus.py -q {}/resample/".format(parameters["dir"], outputFolder)
     print "Running: " + focusCommand
     os.system(focusCommand)
 
     print "3) Calculating confidence interval"
 
     #parses the FOCUS output for all the resamples by taking the AVG and STD of all the samples
-    for myfile in [i for i in os.listdir("{}/resample_result".format(outputPrefix)) if "resample__STAMP_tabular." in i]:
+    for myfile in [i for i in os.listdir("{}/resample_result".format(outputFolder)) if "resample__STAMP_tabular." in i]:
         f=open(myfile)
-        o=open("{}/resample_result/{}".format(outputPrefix,myfile),"w+")
+        o=open("{}/resample_result/{}".format(outputFolder,myfile),"w+")
         head=f.readline().split("\t")
         head="\t".join(head[:len(head)-number_resamples])+"Resample Average\tResample Standard Deviation\n"
         o.write(head)
