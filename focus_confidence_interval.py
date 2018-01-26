@@ -1,6 +1,6 @@
 #!/usr/bin/python
 import random,os,sys,numpy as np
-parameters={"-q":"","-p":"50","-r":"1000"}
+parameters={"-q":"","-p":"50","-r":"1000","-o":""}
 
 #######################################################
 #Read and save the parameters given by the user       #
@@ -19,6 +19,10 @@ def setParameters():
                 if "-h" not in userParameters:
                     print userParameters[i]+" is not a valid parameter"
 setParameters()#store user parameters
+if parameters['-o'] == '':
+    outputPrefix = parameters["-q"]
+else:
+    outputPrefix = parameters['-o']
 
 INPUT=parameters["-q"]
 PERC=int(parameters["-p"])
@@ -55,14 +59,16 @@ def main():
         writeRandsample(sample,random_sample,sequences)
 
     print "2) Running FOCUS in the resample sequences"
-    os.system("python focus.py -q resample/")
+    focusCommand = "python {}/focus.py -q {}/resample/".format(parameters["dir"], outputPrefix)
+    print "Running: " + focusCommand
+    os.system(focusCommand)
 
     print "3) Calculating confidence interval"
 
     #parses the FOCUS output for all the resamples by taking the AVG and STD of all the samples
-    for myfile in [i for i in os.listdir("resample_result") if "resample__STAMP_tabular." in i]:
+    for myfile in [i for i in os.listdir("{}/resample_result".format(outputPrefix)) if "resample__STAMP_tabular." in i]:
         f=open(myfile)
-        o=open("resample_result/"+myfile,"w+")
+        o=open("{}/resample_result/{}".format(outputPrefix,myfile),"w+")
         head=f.readline().split("\t")
         head="\t".join(head[:len(head)-number_resamples])+"Resample Average\tResample Standard Deviation\n"
         o.write(head)
@@ -78,8 +84,8 @@ def main():
         
 if parameters["-q"]!="":
     main()
-    os.system("rm *resample__STAMP_tabular.* -r")
-    os.system("rm resample/ -r")
+    os.system("rm {}/*resample__STAMP_tabular.* -r".format(outputPrefix))
+    # os.system("rm {}/resample/ -r")
     print "4) Done! Please check the folder 'resample_result' for results"
 else:
     print "Please set a query [for example: python focus_confidence_interval.py -q sequences.fasta]"
