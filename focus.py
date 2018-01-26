@@ -428,7 +428,7 @@ else:
                         c+=1
                         myFile = "{}_{}.focus".format(outputPrefix, re.sub(" Level","", level))
                         with open(myFile, 'w') as o:
-                            o.write(currentTab)
+                             [o.write(line) for line in currentTab]
                     # print "\nPlease check "+parameters["-q"]+"_output.txt for a tabular output"
                     # print "That's it!"
                     #
