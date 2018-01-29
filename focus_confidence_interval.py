@@ -46,8 +46,9 @@ def writeRandsample(ID,keys,sequences):
     o.close()
         
 #Creates path for bins output
-if not os.path.exists("resample"):
+if not os.path.exists("{}/resample".format(outputFolder)):
     os.makedirs("{}/resample".format(outputFolder))
+if not os.path.exists("{}/resample_result".format(outputFolder)):
     os.makedirs("{}/resample_result".format(outputFolder))
 
 def main():
