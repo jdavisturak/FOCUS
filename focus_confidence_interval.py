@@ -47,8 +47,8 @@ def writeRandsample(ID,keys,sequences):
         
 #Creates path for bins output
 if not os.path.exists("resample"):
-    os.makedirs("resample")
-    os.makedirs("resample_result")
+    os.makedirs("{}/resample".format(outputFolder))
+    os.makedirs("{}/resample_result".format(outputFolder))
 
 def main():
     sequences=fasta2hash(INPUT)
